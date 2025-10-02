@@ -1,0 +1,165 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_CONTACTS 100
+
+typedef struct {
+    char Nom[50];
+    char Numero_telephone[50];
+    char Adresse_email[50];
+} contact;
+
+contact T[MAX_CONTACTS];
+int nbr_contacts = 0;
+
+void Ajouter() {
+    if (nbr_contacts >= MAX_CONTACTS) {
+        printf("La liste est pleine !!!\n");
+        return;
+    }
+    else{
+    printf("Veuillez entrer les informations suivantes :\n");
+    printf("Nom : ");
+    scanf("%s", T[nbr_contacts].Nom);
+    printf("Numero de telephone : ");
+    scanf("%s", T[nbr_contacts].Numero_telephone);
+    printf("Adresse email : ");
+    scanf("%s", T[nbr_contacts].Adresse_email);
+    printf("Contact ajoute avec succes\n");
+    nbr_contacts++;}
+}
+
+void Modifier() {
+    char Nom[50];
+    char Numero_telephone[50];
+    char email[50];
+    int i, trouve = 0;
+
+    printf("Veuillez entrer le contact que vous voulez modifier\n");
+    printf("Nom : ");
+    scanf("%s", Nom);
+
+    for (i = 0; i < nbr_contacts; i++) {
+        if (strcmp(T[i].Nom, Nom) == 0) {
+            printf("Le contact est trouve !! \n");
+            printf("Veuillez entrer les nouvelles valeurs : \n");
+            printf("Numero de telephone : ");
+            scanf("%s", Numero_telephone);
+            printf("Adresse email : ");
+            scanf("%s", email);
+
+            strcpy(T[i].Numero_telephone, Numero_telephone);
+            strcpy(T[i].Adresse_email, email);
+
+            trouve = 1;
+            break;
+        }
+    }
+
+    if (!trouve) {
+        printf("Le contact n'existe pas  !!\n");
+    }
+}
+
+void Afficher() {
+    if (nbr_contacts == 0) {
+        printf("Il n'y a pas de contact.\n");
+        return;
+    }
+
+    for (int i = 0; i < nbr_contacts; i++) {
+        printf("Contact %d:\n", i + 1);
+        printf("Nom : %s\n", T[i].Nom);
+        printf("Numero de telephone : %s\n", T[i].Numero_telephone);
+        printf("Adresse email : %s\n", T[i].Adresse_email);
+    }
+}
+
+void Supprimer() {
+    char Nom[50];
+    int i, j;
+
+    printf("Veuillez entrer le contact que vous voulez supprimer \n");
+    printf("Nom : ");
+    scanf("%s", Nom);
+
+    for (i = 0; i < nbr_contacts; i++) {
+        if (strcmp(T[i].Nom, Nom) == 0) {
+           for (j = i; j < nbr_contacts ; j++) {
+              T[j-1] = T[j];
+           }
+                 nbr_contacts--;
+
+            printf("Le contact supprime avec succes \n");
+            return;
+        }
+    }
+
+    printf("Le contact n'existe pas \n");
+}
+
+void Rechercher() {
+    char Nom[50];
+    int trouve = 0;
+
+    printf("Veuillez entrer le contact que vous voulez rechercher \n");
+    printf("Nom : ");
+    scanf("%s", Nom);
+
+    for (int i = 0; i < nbr_contacts; i++) {
+        if (strcmp(T[i].Nom, Nom) == 0) {
+            printf("Le contact est trouve !!\n");
+            printf("Nom : %s\n", T[i].Nom);
+            printf("Numero de telephone : %s\n", T[i].Numero_telephone);
+            printf("Adresse email : %s\n", T[i].Adresse_email);
+            trouve = 1;
+            break;
+        }
+    }
+
+    if (!trouve) {
+        printf("Ce contact n'existe pas.\n");
+    }
+}
+
+int main() {
+    char reponse;
+    int choix;
+
+    do {
+        printf("\n====== MENU ======\n");
+        printf("1. Ajouter un Contact\n");
+        printf("2. Modifier un Contact\n");
+        printf("3. Supprimer un Contact\n");
+        printf("4. Afficher Tous les Contacts\n");
+        printf("5. Rechercher un Contact\n");
+        printf("==================\n");
+        printf("Veuillez choisir un nombre : ");
+        scanf("%d", &choix);
+
+        switch (choix) {
+            case 1: Ajouter();
+                    break;
+            case 2: Modifier();
+                    break;
+            case 3: Supprimer();
+                    break;
+            case 4: Afficher();
+                    break;
+            case 5: Rechercher();
+                    break;
+
+            default: printf("Choix invalide !\n");
+        }
+
+            printf("Vous souhaitez revenir au Menu ? (Y/N) : ");
+            scanf(" %c", &reponse);
+            if(reponse=='N'){
+                printf("au revoir !");
+            }
+
+    } while (reponse != 'N');
+
+    return 0;
+}
+
